@@ -69,6 +69,7 @@ public class PersonDAO {
                 person.setLast(rs.getString("last"));
                 person.setBirthday(rs.getString("birthday"));
                 person.setPhone(rs.getString("phone"));
+                person.setEmail(rs.getString("email"));
 
 
                 // Add this person to the list so we can return it.
