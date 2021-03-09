@@ -54,6 +54,9 @@ function showDialogAdd() {
 
     // Print that we got here
     console.log("Opening add item dialog");
+    // $("label.error").hide();
+    // $(".error").removeClass("error");
+    // $('#my-form').reset();
 
     // Clear out the values in the form.
     // Otherwise we'll keep values from when we last

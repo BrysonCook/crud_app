@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 @WebServlet(name = "NameListGetServlet", value = "/api/name_list_get")
 public class NameListGetServlet extends HttpServlet {
     private final static Logger log = Logger.getLogger(NameListGetServlet.class.getName());
