@@ -54,9 +54,15 @@ function showDialogAdd() {
 
     // Print that we got here
     console.log("Opening add item dialog");
-    // $("label.error").hide();
-    // $(".error").removeClass("error");
-    // $('#my-form').reset();
+
+    document.getElementById("my-form").reset();
+    $('#id').removeClass("is-valid is-invalid")
+    $('#firstName').removeClass("is-valid is-invalid")
+    $('#lastName').removeClass("is-valid is-invalid")
+    $('#email').removeClass("is-valid is-invalid")
+    $('#phone').removeClass("is-valid is-invalid")
+    $('#birthday').removeClass("is-valid is-invalid")
+
 
     // Clear out the values in the form.
     // Otherwise we'll keep values from when we last
