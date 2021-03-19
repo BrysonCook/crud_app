@@ -87,16 +87,18 @@ addItemButton.on("click", showDialogAdd);
 
 
 function saveChanges() {
+    let isValid = true;
     console.log("Save changes");
     let firstName = $('#firstName').val();
-    console.log("First name: " + firstName);
-
     let lastName = $('#lastName').val();
-
     let phone = $('#phone').val();
+    let email = $('#email').val();
+    let birthday = $('#birthday').val();
 
     let reg = /^[A-zÀ-ú\s]+$/;
-    let numreg = /^[0-9]{10,11}$/;
+    let phonereg = /^(\d{3}[-]?){1,2}(\d{4})$/;
+    let datereg = /^(\d{4})[-](\d{2})[-](\d{2})$/;
+    let emailreg = /^[a-zA-Z0-9\s]+[@][a-zA-Z0-9.\s]+$/;
 
     if (reg.test(firstName)) {
         $('#firstName').removeClass("is-invalid");
@@ -105,6 +107,7 @@ function saveChanges() {
     } else {
         $('#firstName').removeClass("is-valid");
         $('#firstName').addClass("is-invalid");
+        isValid = false;
     }
 
     if (reg.test(lastName)) {
@@ -114,15 +117,40 @@ function saveChanges() {
     } else {
         $('#lastName').removeClass("is-valid");
         $('#lastName').addClass("is-invalid");
+        isValid = false;
     }
 
-    if (numreg.test(phone)) {
+    if (phonereg.test(phone)) {
         $('#phone').removeClass("is-invalid");
         $('#phone').addClass("is-valid");
 
     } else {
         $('#phone').removeClass("is-valid");
         $('#phone').addClass("is-invalid");
+        isValid = false;
+    }
+
+    if (emailreg.test(email)) {
+        $('#email').removeClass("is-invalid");
+        $('#email').addClass("is-valid");
+    } else {
+        $('#email').removeClass("is-valid");
+        $('#email').addClass("is-invalid");
+        isValid = false;
+    }
+
+    if (datereg.test(birthday)){
+        $('#birthday').removeClass("is-invalid");
+        $('#birthday').addClass("is-valid");
+
+    } else {
+        $('#birthday').removeClass("is-valid");
+        $('#birthday').addClass("is-invalid");
+        isValid = false;
+    }
+
+    if (isValid) {
+        console.log("Valid form");
     }
 }
 
