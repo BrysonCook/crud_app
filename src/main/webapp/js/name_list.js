@@ -98,7 +98,7 @@ function saveChanges() {
     let reg = /^[A-zÀ-ú\s]+$/;
     let phonereg = /^(\d{3}[-]?){1,2}(\d{4})$/;
     let datereg = /^(\d{4})[-](\d{2})[-](\d{2})$/;
-    let emailreg = /^[a-zA-Z0-9\s]+[@][a-zA-Z0-9.\s]+$/;
+    let emailreg = /^[\w.]+@\w+\.\w+$/;
 
     if (reg.test(firstName)) {
         $('#firstName').removeClass("is-invalid");
@@ -149,8 +149,25 @@ function saveChanges() {
         isValid = false;
     }
 
+    let cleanPhone = phone.replace(/\D/g, '');
     if (isValid) {
         console.log("Valid form");
+        let my_data = {first: firstName, last: lastName, email: email, phone: cleanPhone, birthday: birthday};
+        console.log(my_data);
+
+        let url = "api/name_list_edit";
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: JSON.stringify(my_data),
+            success: function(dataFromServer) {
+                console.log(dataFromServer);
+            },
+            contentType: "application/json",
+            dataType: 'json' // Could be JSON or whatever too
+        });
+
     }
 }
 
