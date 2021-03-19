@@ -168,6 +168,9 @@ function saveChanges() {
             dataType: 'json' // Could be JSON or whatever too
         });
 
+        location.reload();
+        return false;
+
     }
 }
 

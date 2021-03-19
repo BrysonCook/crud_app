@@ -31,5 +31,7 @@ public class NameListEdit extends HttpServlet{
         Person person = jsonb.fromJson(requestString, Person.class);
 
         log.log(Level.INFO, "Object test: " + person.getFirst());
+
+        PersonDAO.addPerson(person);
     }
 }
