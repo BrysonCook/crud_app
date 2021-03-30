@@ -26,6 +26,7 @@ $.getJSON(url, null, function(json_result) {
                 "> Delete </button>"
                 +'</td></tr>');
         }
+        $(".deleteButton").on("click", deleteItem);
         console.log("done");
     }
 );
@@ -229,5 +230,25 @@ $(document).keydown(function(e) {
         showDialogAdd();
     }
 })
+
+function deleteItem(e) {
+    console.log("Delete");
+    console.log(e.target.value);
+    let url = "api/name_list_delete";
+    let my_data = {id: e.target.value}
+
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: JSON.stringify(my_data),
+        success: function(dataFromServer) {
+            console.log(dataFromServer);
+        },
+        contentType: "application/json",
+        dataType: 'json'
+    });
+
+    location.reload();
+}
 
 
