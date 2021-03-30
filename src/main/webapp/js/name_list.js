@@ -77,7 +77,12 @@ function showDialogAdd() {
 
     // Show the hidden dialog
     $('#myModal').modal('show');
+
 }
+
+$('#myModal').on('shown.bs.modal', function (){
+    $('#firstName').focus();
+});
 
 // There's a button in the form with the ID "addItem"
 // Associate the function showDialogAdd with it.
@@ -100,6 +105,7 @@ function saveChanges() {
     let datereg = /^(\d{4})[-](\d{2})[-](\d{2})$/;
     let emailreg = /^[\w.]+@\w+\.\w+$/;
 
+
     if (reg.test(firstName)) {
         $('#firstName').removeClass("is-invalid");
         $('#firstName').addClass("is-valid");
@@ -108,6 +114,10 @@ function saveChanges() {
         $('#firstName').removeClass("is-valid");
         $('#firstName').addClass("is-invalid");
         isValid = false;
+    }
+    //Add this to every validate.
+    if(!isValid && success) {
+        $('#firstName').focus();
     }
 
     if (reg.test(lastName)) {
@@ -176,5 +186,12 @@ function saveChanges() {
 
 let saveChangesButton = $('#saveChanges');
 saveChangesButton.on("click", saveChanges);
+
+$(document).keydown(function(e) {
+    console.log(e.keyCode);
+    if(e.keyCode == 65 && !$('#myModal').is(':visible')) {
+        showDialogAdd();
+    }
+})
 
 
