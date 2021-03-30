@@ -11,12 +11,17 @@ import java.util.regex.Pattern;
 @WebServlet(name = "FormTestServlet", value = "/api/form_test_servlet")
 public class FormTestServlet extends HttpServlet {
 
-    private Pattern fieldnameValidationPattern;
+    private Pattern nameValidationPattern;
+    private Pattern phoneNumValidationPattern;
+    private Pattern dateValidationPattern;
+    private Pattern emailValidationPattern;
 
-//    pulbic FormTestServlet(){
-//        fieldnameValidationPattern = Pattern.compile("^[A-Za-z]{1,10}$");
-//
-//    }
+    public FormTestServlet(){
+        nameValidationPattern = Pattern.compile("^[A-zÀ-ú\\s]+$");
+        phoneNumValidationPattern = Pattern.compile("^(\\d{3}[-]?){1,2}(\\d{4})$");
+        dateValidationPattern = Pattern.compile("^(\\d{4})[-](\\d{2})[-](\\d{2})$");
+        emailValidationPattern = Pattern.compile("^[\\w.]+@\\w+\\.\\w+$");
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -44,9 +49,45 @@ public class FormTestServlet extends HttpServlet {
         out.println("Post");
 
         // Grab the data we got via a parameter
-        String fieldname = request.getParameter("fieldname");
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String email = request.getParameter("email");
+        String birthday = request.getParameter("birthday");
+        String phone = request.getParameter("phone");
 
         // Just print the data out to confirm we got it.
-        out.println("fieldname='"+fieldname+"'");
+        out.println("firstName='"+firstName+"'");
+
+        // Now create matcher object.
+        Matcher fname = nameValidationPattern.matcher(firstName);
+        if (fname.find( )) {
+            out.println("success");
+        } else {
+            out.println("error");
+        }
+        Matcher lname = nameValidationPattern.matcher(lastName);
+        if (lname.find( )) {
+            out.println("success");
+        } else {
+            out.println("error");
+        }
+        Matcher emailMatch = emailValidationPattern.matcher(email);
+        if (emailMatch.find( )) {
+            out.println("success");
+        } else {
+            out.println("error");
+        }
+        Matcher phoneMatch = phoneNumValidationPattern.matcher(phone);
+        if (phoneMatch.find( )) {
+            out.println("success");
+        } else {
+            out.println("error");
+        }
+        Matcher dateMatch = dateValidationPattern.matcher(birthday);
+        if (dateMatch.find( )) {
+            out.println("success");
+        } else {
+            out.println("error");
+        }
     }
 }

@@ -22,6 +22,8 @@ $.getJSON(url, null, function(json_result) {
                 +'</td><td>'
                 +htmlSafe(json_result[i].email)
                 +'</td><td>'
+                +"<button type='button' name='edit' class='editButton btn btn-primary' value=" + json_result[i].id +
+                "> edit </button>"
                 +"<button id='mybtn' type='button' name='delete' class='deleteButton btn btn-danger' value=" +json_result[i].id +
                 "> Delete </button>"
                 +'</td></tr>');
