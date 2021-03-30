@@ -21,6 +21,9 @@ $.getJSON(url, null, function(json_result) {
                 +getDateFromSQL(htmlSafe(json_result[i].birthday)).toLocaleDateString()
                 +'</td><td>'
                 +htmlSafe(json_result[i].email)
+                +'</td><td>'
+                +"<button id='mybtn' type='button' name='delete' class='deleteButton btn btn-danger' value=" +json_result[i].id +
+                "> Delete </button>"
                 +'</td></tr>');
         }
         console.log("done");
@@ -55,25 +58,32 @@ function showDialogAdd() {
     // Print that we got here
     console.log("Opening add item dialog");
 
+    let id = $('#id');
+    let firstName = $('#firstName');
+    let lastName = $('#lastName');
+    let email = $('#email');
+    let phone = $('#phone');
+    let birthday = $('#birthday');
+
     document.getElementById("my-form").reset();
-    $('#id').removeClass("is-valid is-invalid")
-    $('#firstName').removeClass("is-valid is-invalid")
-    $('#lastName').removeClass("is-valid is-invalid")
-    $('#email').removeClass("is-valid is-invalid")
-    $('#phone').removeClass("is-valid is-invalid")
-    $('#birthday').removeClass("is-valid is-invalid")
+    id.removeClass("is-valid is-invalid")
+    firstName.removeClass("is-valid is-invalid")
+    lastName.removeClass("is-valid is-invalid")
+    email.removeClass("is-valid is-invalid")
+    phone.removeClass("is-valid is-invalid")
+    birthday.removeClass("is-valid is-invalid")
 
 
     // Clear out the values in the form.
     // Otherwise we'll keep values from when we last
     // opened or hit edit.
     // I'm getting it started, you can finish.
-    $('#id').val("");
-    $('#firstName').val("");
-    $('#lastName').val("");
-    $('#email').val("");
-    $('#phone').val("");
-    $('#birthday').val("");
+    id.val("");
+    firstName.val("");
+    lastName.val("");
+    email.val("");
+    phone.val("");
+    birthday.val("");
 
     // Show the hidden dialog
     $('#myModal').modal('show');
@@ -89,6 +99,20 @@ $('#myModal').on('shown.bs.modal', function (){
 let addItemButton = $('#addItem');
 addItemButton.on("click", showDialogAdd);
 
+function fieldValidate(field, regex) {
+    let isValid = true;
+    if (regex.test(field)) {
+        field.removeClass("is-invalid");
+        field.addClass("is-valid");
+
+    } else {
+        field.removeClass("is-valid");
+        field.addClass("is-invalid");
+        isValid = false;
+    }
+    console.log(regex + " " + field)
+    return isValid
+}
 
 
 function saveChanges() {
@@ -116,9 +140,9 @@ function saveChanges() {
         isValid = false;
     }
     //Add this to every validate.
-    if(!isValid && success) {
-        $('#firstName').focus();
-    }
+    // if(!isValid && success) {
+    //     $('#firstName').focus();
+    // }
 
     if (reg.test(lastName)) {
         $('#lastName').removeClass("is-invalid");
@@ -158,6 +182,18 @@ function saveChanges() {
         $('#birthday').addClass("is-invalid");
         isValid = false;
     }
+
+    // Some issue with validating, although it works well in the original form after making a function it breaks.
+    // let fName = $('#firstName');
+    // let ph = $('#phone');
+    // let em = $('#email');
+    // let birthd = $('#birthday');
+    // let lName = $('#lastName');
+    // isValid = fieldValidate(ph, phonereg);
+    // isValid = fieldValidate(em, emailreg);
+    // isValid = fieldValidate(birthd, datereg);
+    // isValid = fieldValidate(fName, reg);
+    // isValid = fieldValidate(lName, reg);
 
     let cleanPhone = phone.replace(/\D/g, '');
     if (isValid) {
