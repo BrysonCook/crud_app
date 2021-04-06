@@ -5,33 +5,39 @@ let url = "api/name_list_get";
 // URL
 // Data to pass (nothing in this case)
 // Function to call when we are done
-$.getJSON(url, null, function(json_result) {
-    $('#datatable tbody tr').remove()
-        for(let i = 0; i < json_result.length; i++){
-            console.log(json_result[i]);
-            $('#datatable tbody').append('<tr><td>'
-                +json_result[i].id
-                +'</td><td>'
-                +htmlSafe(json_result[i].first)
-                +'</td><td>'
-                +htmlSafe(json_result[i].last)
-                +'</td><td>'
-                +formatPhoneNumber(htmlSafe(json_result[i].phone))
-                +'</td><td>'
-                +getDateFromSQL(htmlSafe(json_result[i].birthday)).toLocaleDateString()
-                +'</td><td>'
-                +htmlSafe(json_result[i].email)
-                +'</td><td>'
-                +"<button type='button' name='edit' class='editButton btn btn-primary' value=" + json_result[i].id +
-                "> edit </button>"
-                +"<button id='mybtn' type='button' name='delete' class='deleteButton btn btn-danger' value=" +json_result[i].id +
-                "> Delete </button>"
-                +'</td></tr>');
+
+function updateTable() {
+    $.getJSON(url, null, function (json_result) {
+            $('#datatable tbody tr').remove()
+            for (let i = 0; i < json_result.length; i++) {
+                console.log(json_result[i]);
+                $('#datatable tbody').append('<tr><td>'
+                    + json_result[i].id
+                    + '</td><td>'
+                    + htmlSafe(json_result[i].first)
+                    + '</td><td>'
+                    + htmlSafe(json_result[i].last)
+                    + '</td><td>'
+                    + formatPhoneNumber(htmlSafe(json_result[i].phone))
+                    + '</td><td>'
+                    + getDateFromSQL(htmlSafe(json_result[i].birthday)).toLocaleDateString()
+                    + '</td><td>'
+                    + htmlSafe(json_result[i].email)
+                    + '</td><td>'
+                    + "<button type='button' name='edit' class='editButton btn btn-primary' value=" + json_result[i].id +
+                    "> edit </button>"
+                    + "<button id='mybtn' type='button' name='delete' class='deleteButton btn btn-danger' value=" + json_result[i].id +
+                    "> Delete </button>"
+                    + '</td></tr>');
+            }
+            $(".deleteButton").on("click", deleteItem);
+            console.log("done");
         }
-        $(".deleteButton").on("click", deleteItem);
-        console.log("done");
-    }
-);
+    );
+}
+
+updateTable();
+
 
 function htmlSafe(data){
     return data.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;");
@@ -142,10 +148,6 @@ function saveChanges() {
         $('#firstName').addClass("is-invalid");
         isValid = false;
     }
-    //Add this to every validate.
-    // if(!isValid && success) {
-    //     $('#firstName').focus();
-    // }
 
     if (reg.test(lastName)) {
         $('#lastName').removeClass("is-invalid");
@@ -212,12 +214,14 @@ function saveChanges() {
             data: JSON.stringify(my_data),
             success: function(dataFromServer) {
                 console.log(dataFromServer);
+                updateTable();
+                $('#myModal').modal('hide');
             },
             contentType: "application/json",
-            dataType: 'json' // Could be JSON or whatever too
-        });
+            dataType: 'text' // Could be JSON or whatever too
+        },
+        );
 
-        location.reload();
         return false;
 
     }
@@ -245,12 +249,13 @@ function deleteItem(e) {
         data: JSON.stringify(my_data),
         success: function(dataFromServer) {
             console.log(dataFromServer);
+            updateTable();
         },
         contentType: "application/json",
-        dataType: 'json'
-    });
+        dataType: 'text'
+    },
+    );
 
-    location.reload();
 }
 
 

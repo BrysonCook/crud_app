@@ -18,7 +18,7 @@ public class FormTestServlet extends HttpServlet {
 
     public FormTestServlet(){
         nameValidationPattern = Pattern.compile("^[A-zÀ-ú\\s]+$");
-        phoneNumValidationPattern = Pattern.compile("^(\\d{3}[-]?){1,2}(\\d{4})$");
+        phoneNumValidationPattern = Pattern.compile("^(\\d{3}){1,2}(\\d{4})$");
         dateValidationPattern = Pattern.compile("^(\\d{4})[-](\\d{2})[-](\\d{2})$");
         emailValidationPattern = Pattern.compile("^[\\w.]+@\\w+\\.\\w+$");
     }
@@ -26,7 +26,7 @@ public class FormTestServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // You can output in any format, text/JSON, text/HTML, etc. We'll keep it simple
-        response.setContentType("text/plain");
+        response.setContentType("application/json");
         PrintWriter out = response.getWriter();
 
         // Print that this is a get, not a post
@@ -42,7 +42,7 @@ public class FormTestServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // You can output in any format, text/JSON, text/HTML, etc. We'll keep it simple
-        response.setContentType("text/plain");
+        response.setContentType("application/json");
         PrintWriter out = response.getWriter();
 
         // Print that this is a post
