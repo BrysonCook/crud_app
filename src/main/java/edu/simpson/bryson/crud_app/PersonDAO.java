@@ -34,6 +34,7 @@ public class PersonDAO {
             // This is a string that is our SQL query.
             // Update for all our fields
 
+
             String sql = "INSERT INTO person (first, last, email, phone, birthday) VALUES (?, ?, ?, ?, ?);";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, inputPerson.getFirst());
@@ -44,6 +45,51 @@ public class PersonDAO {
 
             // Execute the SQL and get the results
             stmt.executeUpdate();
+
+
+        } catch (SQLException se) {
+            log.log(Level.SEVERE, "SQL Error", se );
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Error", e );
+        } finally {
+            // Ok, close our result set, statement, and connection
+            try { if (rs != null) rs.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+
+            try { if(stmt != null) stmt.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+
+            try { if(conn != null) conn.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+        }
+
+    }
+
+    public static void updatePerson(Person inputPerson){
+        log.log(Level.FINE, "Add Person");
+
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            // Get our database connection
+            conn = DBHelper.getConnection();
+
+            // This is a string that is our SQL query.
+            // Update for all our fields
+
+
+            String sql = "update person set first=?, last=?, email=?, phone=?, birthday=? where id=?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, inputPerson.getFirst());
+            stmt.setString(2, inputPerson.getLast());
+            stmt.setString(3, inputPerson.getEmail());
+            stmt.setString(4, inputPerson.getPhone());
+            stmt.setString(5, inputPerson.getBirthday());
+            stmt.setInt(6, inputPerson.getId());
+            stmt.executeUpdate();
+
 
         } catch (SQLException se) {
             log.log(Level.SEVERE, "SQL Error", se );

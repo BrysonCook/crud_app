@@ -25,12 +25,13 @@ function updateTable() {
                     + htmlSafe(json_result[i].email)
                     + '</td><td>'
                     + "<button type='button' name='edit' class='editButton btn btn-primary' value=" + json_result[i].id +
-                    "> edit </button>"
+                    "> Edit </button>"
                     + "<button id='mybtn' type='button' name='delete' class='deleteButton btn btn-danger' value=" + json_result[i].id +
                     "> Delete </button>"
                     + '</td></tr>');
             }
             $(".deleteButton").on("click", deleteItem);
+            $(".editButton").on("click", editItem);
             console.log("done");
         }
     );
@@ -127,6 +128,7 @@ function fieldValidate(field, regex) {
 function saveChanges() {
     let isValid = true;
     console.log("Save changes");
+    let id = $('#id').val();
     let firstName = $('#firstName').val();
     let lastName = $('#lastName').val();
     let phone = $('#phone').val();
@@ -202,8 +204,16 @@ function saveChanges() {
 
     let cleanPhone = phone.replace(/\D/g, '');
     if (isValid) {
+        let my_data;
+
+        if (id != "") {
+            my_data = {id: id, first: firstName, last: lastName, email: email, phone: cleanPhone, birthday: birthday};
+
+        } else {
+            my_data = {first: firstName, last: lastName, email: email, phone: cleanPhone, birthday: birthday};
+        }
         console.log("Valid form");
-        let my_data = {first: firstName, last: lastName, email: email, phone: cleanPhone, birthday: birthday};
+
         console.log(my_data);
 
         let url = "api/name_list_edit";
@@ -231,7 +241,7 @@ let saveChangesButton = $('#saveChanges');
 saveChangesButton.on("click", saveChanges);
 
 $(document).keydown(function(e) {
-    console.log(e.keyCode);
+    // console.log(e.keyCode);
     if(e.keyCode == 65 && !$('#myModal').is(':visible')) {
         showDialogAdd();
     }
@@ -255,6 +265,47 @@ function deleteItem(e) {
         dataType: 'text'
     },
     );
+
+}
+
+function editItem(e){
+    // console.debug("Edit");
+    console.debug("Edit: "+ e.target.value);
+
+    let id = e.target.value;
+    let first = e.target.parentNode.parentNode.querySelectorAll("td")[1].innerHTML;
+    let last = e.target.parentNode.parentNode.querySelectorAll("td")[2].innerHTML;
+    let phone = e.target.parentNode.parentNode.querySelectorAll("td")[3].innerHTML;
+    let birthday = e.target.parentNode.parentNode.querySelectorAll("td")[4].innerHTML;
+    let email = e.target.parentNode.parentNode.querySelectorAll("td")[5].innerHTML;
+
+    $('#id').val(id);
+    $('#firstName').val(first);
+    $('#lastName').val(last);
+    $('#email').val(email);
+
+    let regexp = /\((\d{3})\) (\d{3})-(\d{4})/;
+    let match = phone.match(regexp);
+
+    console.log("Matcher:");
+    console.log(match);
+
+    let phoneString = match[1] + '-' + match[2] + '-' + match[3];
+    console.log(phoneString);
+    phone = phoneString;
+    $('#phone').val(phoneString);
+
+    let timestamp = Date.parse(birthday);
+    let dateObject = new Date(timestamp);
+    let fullDateString = dateObject.toISOString();
+    let shortDateString = fullDateString.split('T')[0];
+    console.log(shortDateString);
+    birthday = shortDateString;
+    $('#birthday').val(shortDateString);
+
+    console.log(first + " " + last + " " + birthday + " " + phone + " " + email);
+
+    $('#myModal').modal('show');
 
 }
 
